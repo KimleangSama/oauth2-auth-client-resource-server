@@ -37,12 +37,13 @@ public class AuthorizationConsentController {
                           @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
                           @RequestParam(OAuth2ParameterNames.STATE) String state) {
         // Remove scopes that were already approved
+        log.info("Consent request for clientId: {}, scopes: {}, state: {}", clientId, scope, state);
         Set<String> scopesToApprove = new HashSet<>();
         Set<String> previouslyApprovedScopes = new HashSet<>();
         RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
         if (registeredClient == null) {
             model.addAttribute("clientId", clientId);
-            return "no-client";
+            return "client-not-found";
         }
         OAuth2AuthorizationConsent currentAuthorizationConsent = authorizationConsentService.findById(registeredClient.getId(), principal.getName());
         Set<String> authorizedScopes;

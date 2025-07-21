@@ -5,7 +5,7 @@ insert into oauth2_client (client_id, client_id_issued_at, client_name, client_s
 VALUES ( -- password
            'authorization-code-client-id', CURRENT_TIMESTAMP, 'authorization-code-client-name', '{noop}secret1', null,
            'client_secret_post', 'authorization_code,refresh_token', 'message.read,message.write',
-           'http://localhost:8080/client/authorized', false);
+           'http://localhost:8080/client/authorized,http://127.0.0.1:8080/client/authorized', false);
 
 insert into oauth2_client_setting (client_id, require_authorization_consent)
 VALUES ( -- password

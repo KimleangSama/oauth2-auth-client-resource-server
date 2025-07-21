@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Client</title>
+    <title>Error</title>
 </head>
 <body>
 <div class="container">
-    <h1>No Client Found</h1>
-    <p>It seems that you do not have a client configured. Please set up a client to continue.</p>
+    <h1>Error</h1>
+    <p>There was an error processing your request.</p>
+    <p>Status Code: <span th:text="${status}">500</span></p>
+    <p>Message: <span th:text="${message}">An unexpected error occurred.</span></p>
+    <p>Path: <span th:text="${path}">/</span></p>
+    <a href="/" th:href="@{/}">Go to Home</a>
 </div>
 </body>
 </html>
