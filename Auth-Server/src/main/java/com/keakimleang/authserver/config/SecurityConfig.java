@@ -46,7 +46,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         LOGGER.debug("in configure HttpSecurity");
-
         Customizer<IdentityConfigurer> identityConfigurerCustomizer = Customizer.withDefaults();
         IdentityConfigurer identityConfigurer = new IdentityConfigurer()
                 .oauth2UserHandler(new OAuth2UserRepositoryHandler());
