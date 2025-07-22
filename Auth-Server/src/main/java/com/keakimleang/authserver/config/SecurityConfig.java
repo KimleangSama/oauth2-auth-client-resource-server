@@ -52,7 +52,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/", "/webjars/**", "/image/**")
+                                .requestMatchers("/webjars/**", "/image/**")
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -61,6 +61,7 @@ public class SecurityConfig {
                         .failureUrl("/login-error")
                         .permitAll()
                 )
+//                .logout(logout -> logout.logoutUrl("/logout"))
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/actuator/**")
                 )

@@ -1,14 +1,16 @@
 package com.keakimleang.authserver.entities;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
+import com.keakimleang.authserver.oauth2.entity.OAuth2Client;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -30,7 +32,7 @@ import org.springframework.security.core.CredentialsContainer;
         name = "users",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "UserPrincipal_Username",
+                        name = "users_username_unique",
                         columnNames = "username"
                 )
         }
@@ -48,28 +50,25 @@ public class User implements CredentialsContainer, Cloneable, Serializable {
     )
     private Long id;
 
-    @Basic
+    private String email;
     private String username;
-    @Basic
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "users_authorities",
-            joinColumns = {
-                    @JoinColumn(
-                            name = "user_id",
-                            referencedColumnName = "id"
-                    )
-            }
-    )
-    private Set<UserAuthority> authorities = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> authorities = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<OAuth2Client> clients = new HashSet<>();
 
     public User() {
 
     }
 
-    public User(Long id, String username, String password, Set<UserAuthority> authorities) {
+    public User(Long id, String username, String password, Set<Role> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;

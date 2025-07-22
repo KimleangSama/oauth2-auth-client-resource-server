@@ -1,20 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/mainLayout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kimleang Kea</title>
 </head>
 <body>
-<div class="container">
-    <h1>Welcome to Kimleang Kea's Auth Server</h1>
-    <p>This is a simple authentication server built with Spring Boot.</p>
-    <p>Use the links below to navigate:</p>
-    <ul>
-        <li><a href="/login" th:href="@{/login}">Login</a></li>
-        <li><a href="/register" th:href="@{/register}">Register</a></li>
-        <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
-    </ul>
+<div layout:fragment="content" th:remove="tag" class="container mt-5">
+    <h1 class="mb-4">Welcome to Auth Server</h1>
+    <p class="lead">This is a simple authentication server built with Spring Boot.</p>
+
+    <div sec:authorize="isAuthenticated()">
+        <div class="alert alert-info">
+            Logged in as: <strong><span sec:authentication="name"></span></strong>
+        </div>
+
+        <a class="btn btn-primary" th:href="@{/clients/new}">Create New</a>
+
+        <h2 class="mt-4">Your OAuth2 Clients</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle mt-3">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Client Name</th>
+                    <th>Client ID</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="client : ${oAuth2Clients}">
+                    <td th:text="${client.id}">1</td>
+                    <td th:text="${client.clientName}">Sample Client</td>
+                    <td th:text="${client.clientId}">client-123</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a th:href="@{/clients/edit/{id}(id=${client.id})}" class="btn btn-sm btn-warning">Edit</a>
+                            <form th:action="@{/clients/delete/{id}(id=${client.id})}" method="post"
+                                  th:object="${client}">
+                                <input type="hidden" name="_method" value="delete"/>
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure?')">Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-outline-secondary">Logout</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

@@ -49,13 +49,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.DelegatingAuthenticationConverter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.thymeleaf.spring6.SpringTemplateEngine;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
 public class AuthorizationServerConfig {
-    private final SpringTemplateEngine templateEngine;
     private final OAuth2RegisteredClientService oauth2RegisteredClientService;
 
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";

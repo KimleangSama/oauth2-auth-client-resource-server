@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimleang Kea</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag" class="container mt-5">
+    <h1>Create New OAuth2 Client</h1>
+
+    <form th:action="@{/clients/create}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <div class="mb-3">
+            <label for="clientId" class="form-label">Client ID</label>
+            <input type="text" class="form-control" id="clientId" name="clientId" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="clientSecret" class="form-label">Client Secret</label>
+            <input type="text" class="form-control" id="clientSecret" name="clientSecret" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="clientName" class="form-label">Client Name</label>
+            <input type="text" class="form-control" id="clientName" name="clientName" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="authMethod" class="form-label">Client Authentication Methods</label>
+            <input type="text" class="form-control" id="authMethod" name="clientAuthenticationMethods"
+                   placeholder="e.g. client_secret_basic" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="grantType" class="form-label">Authorization Grant Types</label>
+            <input type="text" class="form-control" id="grantType" name="authorizationGrantTypes"
+                   placeholder="e.g. authorization_code" required/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Scopes</label>
+            <div>
+                <div class="form-check" th:each="scope : ${allScopes}">
+                    <input class="form-check-input" type="checkbox" name="scopes" th:id="'scope-' + ${scope}"
+                           th:value="${scope}"/>
+                    <label class="form-check-label" th:for="'scope-' + ${scope}" th:text="${scope}"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Redirect URIs</label>
+            <div id="redirectUrisContainer">
+                <div class="input-group mb-2">
+                    <input type="text" name="redirectUris" class="form-control" required/>
+                    <button type="button" class="btn btn-outline-danger" onclick="removeUri(this)">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary" onclick="addUri()">Add Redirect URI</button>
+        </div>
+
+        <button type="submit" class="btn btn-success">Create</button>
+        <a th:href="@{ / }" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+
+    <script>
+        function addUri() {
+            const container = document.getElementById('redirectUrisContainer');
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+            div.innerHTML = `
+            <input type="text" name="redirectUris" class="form-control" required />
+            <button type="button" class="btn btn-outline-danger" onclick="removeUri(this)">Remove</button>
+        `;
+            container.appendChild(div);
+        }
+
+        function removeUri(button) {
+            button.parentElement.remove();
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+</body>
+</html>

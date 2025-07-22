@@ -1,11 +1,11 @@
 ------------------------------------------------------- oauth2-authorization-code-client -----------------------------
 
 insert into oauth2_client (client_id, client_id_issued_at, client_name, client_secret, client_secret_expires_at,
-                           authentication_method, authorization_grant_type, scopes, redirect_uris, registered)
+                           authentication_method, authorization_grant_type, scopes, redirect_uris, registered, user_id)
 VALUES ( -- password
            'authorization-code-client-id', CURRENT_TIMESTAMP, 'authorization-code-client-name', '{noop}secret1', null,
            'client_secret_post', 'authorization_code,refresh_token', 'message.read,message.write',
-           'http://localhost:8080/client/authorized,http://127.0.0.1:8080/client/authorized', false);
+           'http://localhost:8080/client/authorized,http://127.0.0.1:8080/client/authorized', false, 1);
 
 insert into oauth2_client_setting (client_id, require_authorization_consent)
 VALUES ( -- password
@@ -20,10 +20,10 @@ VALUES ( -- password
 ------------------------------------------------------ Client-Credentials-client -------------------------------------
 
 insert into oauth2_client (client_id, client_id_issued_at, client_name, client_secret, client_secret_expires_at,
-                           authentication_method, authorization_grant_type, scopes, redirect_uris, registered)
+                           authentication_method, authorization_grant_type, scopes, redirect_uris, registered, user_id)
 VALUES ( -- password
            'client-credentials-client-id', CURRENT_TIMESTAMP, 'client-credentials-client-name', '{noop}secret2', null,
-           'client_secret_basic', 'client_credentials,refresh_token', 'message.read,message.write', null, false);
+           'client_secret_basic', 'client_credentials,refresh_token', 'message.read,message.write', null, false, 1);
 
 
 insert into oauth2_client_token_setting (client_id, access_token_time, access_token_time_unit, refresh_token_time,

@@ -45,6 +45,7 @@ public class CustomJwtGrantedAuthoritiesConverter implements Converter<Jwt, Coll
     }
 
     private Collection<String> getAuthorities(Jwt jwt) {
+        logger.info("Authorities claim found: " + jwt.toString());
         String claimName = getAuthoritiesClaimName(jwt);
         if (claimName == null) {
             this.logger.trace("Returning no authorities since could not find any claims that might contain scopes");

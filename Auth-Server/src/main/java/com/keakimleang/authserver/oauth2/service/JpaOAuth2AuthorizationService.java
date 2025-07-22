@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.keakimleang.authserver.entities.User;
-import com.keakimleang.authserver.entities.UserAuthority;
+import com.keakimleang.authserver.entities.Role;
 import com.keakimleang.authserver.oauth2.entity.OAuth2AuthorizationEntity;
 import com.keakimleang.authserver.oauth2.repository.OAuth2AuthorizationRepository;
 import com.keakimleang.authserver.service.CustomUserDetails;
@@ -53,7 +53,7 @@ public class JpaOAuth2AuthorizationService implements OAuth2AuthorizationService
         this.objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
 
         // You will need to write the Mixin for your class so Jackson can marshall it.
-        this.objectMapper.addMixIn(UserAuthority.class, UserAuthorityMixin.class);
+        this.objectMapper.addMixIn(Role.class, UserAuthorityMixin.class);
         this.objectMapper.addMixIn(User.class, UserMixin.class);
         this.objectMapper.addMixIn(CustomUserDetails.class, CustomUserDetailsMixin.class);
         this.objectMapper.addMixIn(Long.class, LongMixin.class);

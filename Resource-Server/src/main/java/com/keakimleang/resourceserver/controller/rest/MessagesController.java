@@ -15,11 +15,10 @@ public class MessagesController {
     @GetMapping("/messages")
     @PreAuthorize("hasAuthority('USER') or hasAuthority('message.read') ")
     public String[] getMessages(@AuthenticationPrincipal Jwt jwt) {
-        log.info("Getting messages for {}", jwt.toString());
         log.info("Getting messages for {}", jwt.getClaims().toString());
         Long userId = JwtService.getUserId(jwt);
         log.info("User ID: {}", userId);
-        return new String[]{"Message 1", "Message 2", "Message 3"};
+        return new String[]{"Message 1", "Message 2", "Message 3", "Message 4"};
     }
 
 }
